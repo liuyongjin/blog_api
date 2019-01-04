@@ -26,7 +26,8 @@ class BaseValidate extends Validate
             $exception = new BaseException(
                 [
                     // $this->error有一个问题，并不是一定返回数组，需要判断
-                    'msg' => $this->getError()
+                    'msg' => $this->getError(),
+                    'code' => 200
                 ]);
             throw $exception;
         }
