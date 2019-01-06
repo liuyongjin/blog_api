@@ -1,6 +1,7 @@
 <?php
 namespace app\api\controller;
 use think\Controller;
+use app\api\service\Token;
 
 class BaseController extends Controller
 {
@@ -10,5 +11,9 @@ class BaseController extends Controller
         $res['data']=$data;
         $res['msg']=$msg;
         return json($res,$code)->header(['Content-Type' => 'application/json']);
+    }
+    protected function checkPrimaryScope()
+    {
+        Token::needPrimaryScope();
     }
 }

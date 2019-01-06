@@ -13,6 +13,12 @@ Route::get('test', 'index/index/index');
 Route::group('api/:version',function(){
    //登录
     Route::post('login', 'api/:version.User/login');
+    //退出登录
+    Route::post('logout', 'api/:version.User/logout');
+    //注册
+    Route::post('register', 'api/:version.User/register');
+    //修改个人信息
+    Route::post('modifyInfo', 'api/:version.User/modifyInfo');
 });
 
 

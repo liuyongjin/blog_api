@@ -8,7 +8,7 @@ use think\Exception;
  */
 class BaseException extends Exception
 {
-    public $code = 400;
+    public $code = 200;
     public $msg = 'invalid parameters';
     public $errorCode = 999;
     

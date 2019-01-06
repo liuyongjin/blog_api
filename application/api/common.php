@@ -13,3 +13,6 @@ function getRandChar($length)
 
     return $str;
 }
+function encryption($str){
+    return sha1(md5($str));
+}
