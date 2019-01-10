@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::get('test', 'index/index/index');
+// Route::get('test', 'index/index/index');
 Route::group('api/:version',function(){
    //登录
     Route::post('login', 'api/:version.User/login');
@@ -19,6 +19,16 @@ Route::group('api/:version',function(){
     Route::post('register', 'api/:version.User/register');
     //修改个人信息
     Route::post('modifyInfo', 'api/:version.User/modifyInfo');
+    //文章列表
+    Route::any('article/list', 'api/:version.Article/index');
+    //新增文章
+    Route::post('article/add', 'api/:version.Article/add');
+    //编辑文章
+    Route::post('article/edit', 'api/:version.Article/edit');
+    //删除文章
+    Route::post('article/del', 'api/:version.Article/del');
+    //批量删除文章
+    Route::post('article/bdel', 'api/:version.Article/bdel');
 });
 
 
