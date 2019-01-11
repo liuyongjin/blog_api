@@ -29,6 +29,16 @@ Route::group('api/:version',function(){
     Route::post('article/del', 'api/:version.Article/del');
     //批量删除文章
     Route::post('article/bdel', 'api/:version.Article/bdel');
+    //评论列表
+    Route::post('comment/list', 'api/:version.Comment/list');
+    //新增评论
+    Route::post('comment/add', 'api/:version.Comment/add');
+    //编辑评论
+    Route::post('comment/edit', 'api/:version.Comment/edit');
+    //删除评论
+    Route::post('comment/del', 'api/:version.Comment/del');
+    //批量删除评论
+    Route::post('comment/bdel', 'api/:version.Comment/bdel');
 });
 
 
