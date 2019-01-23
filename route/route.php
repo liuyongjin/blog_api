@@ -20,7 +20,7 @@ Route::group('api/:version',function(){
     //修改个人信息
     Route::post('modifyInfo', 'api/:version.User/modifyInfo');
     //文章列表
-    Route::any('article/list', 'api/:version.Article/index');
+    Route::any('article/index', 'api/:version.Article/index');
     //新增文章
     Route::post('article/add', 'api/:version.Article/add');
     //编辑文章
@@ -30,7 +30,7 @@ Route::group('api/:version',function(){
     //批量删除文章
     Route::post('article/bdel', 'api/:version.Article/bdel');
     //评论列表
-    Route::post('comment/list', 'api/:version.Comment/list');
+    Route::post('comment/index', 'api/:version.Comment/index');
     //新增评论
     Route::post('comment/add', 'api/:version.Comment/add');
     //编辑评论
@@ -39,6 +39,16 @@ Route::group('api/:version',function(){
     Route::post('comment/del', 'api/:version.Comment/del');
     //批量删除评论
     Route::post('comment/bdel', 'api/:version.Comment/bdel');
+    //标签列表
+    Route::post('tag/index', 'api/:version.Tag/index');
+    //新增标签
+    Route::post('tag/add', 'api/:version.Tag/add');
+    //编辑标签
+    Route::post('tag/edit', 'api/:version.Tag/edit');
+    //删除标签
+    Route::post('tag/del', 'api/:version.Tag/del');
+    //批量删除标签
+    Route::post('tag/bdel', 'api/:version.Tag/bdel');
 });
 
 
