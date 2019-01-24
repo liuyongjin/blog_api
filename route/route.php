@@ -49,6 +49,16 @@ Route::group('api/:version',function(){
     Route::post('tag/del', 'api/:version.Tag/del');
     //批量删除标签
     Route::post('tag/bdel', 'api/:version.Tag/bdel');
+    //配置列表
+    Route::post('config/index', 'api/:version.Config/index');
+    //新增配置
+    Route::post('config/add', 'api/:version.Config/add');
+    //编辑配置
+    Route::post('config/edit', 'api/:version.Config/edit');
+    //删除配置
+    Route::post('config/del', 'api/:version.Config/del');
+    //批量删除配置
+    Route::post('config/bdel', 'api/:version.Config/bdel');
 });
 
 

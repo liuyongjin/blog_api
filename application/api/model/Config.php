@@ -9,20 +9,23 @@ class Config extends Model
     use SoftDelete;
     public static function getConfig($data)
     {
-        $Config = static::limit($data['limit'])->page($data['page'])->select();
-        if(!$Config){
+        $config = static::limit($data['limit'])->page($data['page'])->select();
+        if(!$config){
             throw new BaseException(
             [
                 'msg' => '获取配置失败',
                 'errorCode'=>1
             ]);
         }
-        return $Config;
+        return $config;
     }
     public static function addConfig($data)
     {
-        $Config = self::create($data);
-        if(!$Config){
+        //新增配置从配置中获取值config_app,100是front,200是wap,300是后台，默认取后台配置
+        $data['config_dev']=config('my.config_dev');
+        $data['config_app']=isset($data['config_app'])?$data['config_app']:config('my.config_admin_app');
+        $config = self::create($data);
+        if(!$config){
             throw new BaseException(
             [
                 'msg' => '新增配置失败',
@@ -32,8 +35,10 @@ class Config extends Model
     }
     public static function editConfig($data)
     {
-        $Config = self::save($data);
-        if(!$Config){
+        $data['config_dev']=config('my.config_dev');
+        $data['config_app']=isset($data['config_app'])?$data['config_app']:config('my.config_admin_app');
+        $config =(new Config)->save($data,['id' => $data['id']]);
+        if(!$config){
             throw new BaseException(
             [
                 'msg' => '编辑配置失败',
@@ -43,11 +48,22 @@ class Config extends Model
     }
     public static function delConfig($id)
     {
-        $Config = self::get($id)->delete();
-        if(!$Config){
+        $config = self::get($id)->delete();
+        if(!$config){
             throw new BaseException(
             [
                 'msg' => '删除配置失败',
+                'errorCode'=>1
+            ]);
+        }
+    }
+    public static function bdelConfig($ids)
+    {
+        $Tag = self::destroy($ids);
+        if(!$Tag){
+            throw new BaseException(
+            [
+                'msg' => '批量删除标签失败',
                 'errorCode'=>1
             ]);
         }

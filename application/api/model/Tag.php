@@ -9,20 +9,20 @@ class Tag extends Model
     use SoftDelete;
     public static function getTag($data)
     {
-        $Tag = static::limit($data['limit'])->page($data['page'])->select();
-        if(!$Tag){
+        $tag = static::limit($data['limit'])->page($data['page'])->select();
+        if(!$tag){
             throw new BaseException(
             [
                 'msg' => '获取标签失败',
                 'errorCode'=>1
             ]);
         }
-        return $Tag;
+        return $tag;
     }
     public static function addTag($data)
     {
-        $Tag = self::create($data);
-        if(!$Tag){
+        $tag = self::create($data);
+        if(!$tag){
             throw new BaseException(
             [
                 'msg' => '新增标签失败',
@@ -32,8 +32,9 @@ class Tag extends Model
     }
     public static function editTag($data)
     {
-        $Tag = self::update($data);
-        if(!$Tag){
+        // $tag = self::update($data);
+        $tag =(new Tag)->save($data,['id' => $data['id']]);
+        if(!$tag){
             throw new BaseException(
             [
                 'msg' => '编辑标签失败',
@@ -43,8 +44,8 @@ class Tag extends Model
     }
     public static function delTag($id)
     {
-        $Tag = self::get($id)->delete();
-        if(!$Tag){
+        $tag = self::get($id)->delete();
+        if(!$tag){
             throw new BaseException(
             [
                 'msg' => '删除标签失败',
@@ -54,8 +55,8 @@ class Tag extends Model
     }
     public static function bdelTag($ids)
     {
-        $Tag = self::destroy($ids);
-        if(!$Tag){
+        $tag = self::destroy($ids);
+        if(!$tag){
             throw new BaseException(
             [
                 'msg' => '批量删除标签失败',
