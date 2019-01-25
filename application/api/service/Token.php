@@ -12,6 +12,7 @@ class Token
         $randChar = getRandChar(32);
         $timestamp = $_SERVER['REQUEST_TIME_FLOAT'];
         $tokenSalt = config('my.token_salt');
+        // return hash('md5',md5($randChar . $timestamp . $tokenSalt));
         return md5($randChar . $timestamp . $tokenSalt);
     }
     //验证token是否合法或者是否过期
@@ -22,7 +23,41 @@ class Token
     {
         $scope = self::getCurrentTokenVar('scope');
     }
-    public static function getCurrentTokenVar($key)
+    public static function getCurrentTokenVar($key='')
+    {
+        $token = request()->header('token');
+        if(!$token){
+            $exception = new BaseException(
+                [
+                    'msg' => '请输入token',
+                    'errorCode'=>1
+                ]);
+            throw $exception;
+        }
+        $vars = cache($token);
+        // var_dump($vars);
+        // exit;
+        if (!$vars)
+        {
+            $exception = new BaseException(
+                [
+                    'msg' => 'Token已过期或无效Token',
+                    'errorCode'=>1
+                ]);
+            throw $exception;
+        }else{
+            if($vars['auth']!=='user'){
+                $exception = new BaseException(
+                    [
+                        'msg' => '不是后台用户，无法操作后台',
+                        'errorCode'=>1
+                    ]);
+                throw $exception;
+            }
+        }
+        return $vars;
+    }
+    public static function verifyIdentity()
     {
         $token = request()->header('token');
         if(!$token){
@@ -42,6 +77,16 @@ class Token
                     'errorCode'=>1
                 ]);
             throw $exception;
+        }else{
+            if($vars['auth']!=='member'){
+                $exception = new BaseException(
+                    [
+                        'msg' => '不是会员用户',
+                        'errorCode'=>1
+                    ]);
+                throw $exception;
+            }
         }
+        return $vars;
     }
 }

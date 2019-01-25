@@ -4,6 +4,7 @@ namespace app\api\model;
 use think\Model;
 use app\lib\exception\BaseException;
 use think\model\concern\SoftDelete;
+use app\api\service\Token;
 class Comment extends Model
 {
     use SoftDelete;
@@ -17,10 +18,23 @@ class Comment extends Model
                 'errorCode'=>1
             ]);
         }
-        return $comment;
+        $count = static::limit($data['limit'])->page($data['page'])->count();
+        $res['data']=$comment;
+        $res['total']=$count;
+        return $res;
     }
     public static function addComment($data)
     {
+        //获取当前的member_id
+        $info=Token::verifyIdentity();
+        if($info['auth']==='member'){
+            $data['member_id']=$info['id'];
+        }else{
+            throw new BaseException([
+                'msg' => '没有获取到前台用户id',
+                'errorCode' => 999
+            ]);
+        }
         $comment = self::create($data);
         if(!$comment){
             throw new BaseException(
@@ -32,7 +46,7 @@ class Comment extends Model
     }
     public static function editComment($data)
     {
-        $comment = self::save($data);
+        $comment =(new Comment)->save($data,['id' => $data['id']]);
         if(!$comment){
             throw new BaseException(
             [
@@ -54,7 +68,8 @@ class Comment extends Model
     }
     public static function bdelComment($ids)
     {
-        $comment = self::get($ids)->delete();
+        // $comment = self::get($ids)->delete();
+        $comment =self::destroy($ids);
         if(!$comment){
             throw new BaseException(
             [

@@ -17,7 +17,10 @@ class Tag extends Model
                 'errorCode'=>1
             ]);
         }
-        return $tag;
+        $count = static::limit($data['limit'])->page($data['page'])->count();
+        $res['data']=$tag;
+        $res['total']=$count;
+        return $res;
     }
     public static function addTag($data)
     {

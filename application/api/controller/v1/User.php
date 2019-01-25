@@ -2,7 +2,7 @@
 namespace app\api\controller\v1;
 use app\api\controller\BaseController;
 use app\api\model\User as UserModel;
-use app\api\validate\Login;
+use app\api\validate\User as UserValidate;
 class User extends BaseController
 {
     protected $beforeActionList = [
@@ -10,7 +10,7 @@ class User extends BaseController
     ];
     public function login()
     {
-        (new Login())->goCheck();
+        (new UserValidate())->goCheck();
     	$data=input('post.');
         if($token=UserModel::loginUser($data)){
           $res['token']=$token;
@@ -19,7 +19,7 @@ class User extends BaseController
     }
     public function register()
     {
-        (new Login())->goCheck();
+        (new UserValidate())->goCheck();
     	$data=input('post.');
         if(UserModel::registerUser($data)){
             return $this->res([],'注册成功');
@@ -36,7 +36,7 @@ class User extends BaseController
         }
     }
     public function modifyInfo(){
-        (new Login())->scene('edit')->goCheck();
+        (new UserValidate())->scene('edit')->goCheck();
     	$data=input('post.');
         if(UserModel::modifyUser($data)){
             return $this->res([],'修改成功');

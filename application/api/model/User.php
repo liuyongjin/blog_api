@@ -36,8 +36,11 @@ class User extends Model
             ]
             );
             $expire_in = config('my.token_expire_in');
-            if(!cache($token, $token, $expire_in)){
-                throw new TokenException([
+            $info['id']=$user['id'];
+            //user表的用户才能操作后台接口
+            $info['auth']='user';
+            if(!cache($token, $info, $expire_in)){
+                throw new BaseException([
                     'msg' => '服务器缓存异常',
                     'errorCode' => 10005
                 ]);

@@ -17,6 +17,9 @@ class Config extends Model
                 'errorCode'=>1
             ]);
         }
+        $count = static::limit($data['limit'])->page($data['page'])->count();
+        $res['data']=$config;
+        $res['total']=$count;
         return $config;
     }
     public static function addConfig($data)

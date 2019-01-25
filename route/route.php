@@ -59,6 +59,20 @@ Route::group('api/:version',function(){
     Route::post('config/del', 'api/:version.Config/del');
     //批量删除配置
     Route::post('config/bdel', 'api/:version.Config/bdel');
+    //会员列表
+    Route::post('member/index', 'api/:version.Member/index');
+    //新增会员
+    Route::post('member/add', 'api/:version.Member/add');
+    //编辑会员
+    Route::post('member/edit', 'api/:version.Member/edit');
+    //删除会员
+    Route::post('member/del', 'api/:version.Member/del');
+    //批量删除会员
+    Route::post('member/bdel', 'api/:version.Member/bdel');
+    //会员登录
+    Route::post('member/login', 'api/:version.Member/login');
+    //会员退出登录
+    Route::post('member/logout', 'api/:version.Member/logout');
 });
 
 

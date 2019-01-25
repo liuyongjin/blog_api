@@ -12,8 +12,14 @@ class BaseController extends Controller
         $res['msg']=$msg;
         return json($res,$code)->header(['Content-Type' => 'application/json']);
     }
+    //后台身份验证
     protected function checkPrimaryScope()
     {
         Token::needPrimaryScope();
+    }
+    //前台会员验证
+    protected function checkMemberIdentity()
+    {
+        Token::verifyIdentity();
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace app\api\validate;
 
-class Login extends BaseValidate
+class User extends BaseValidate
 {
     protected $rule = [
         'username' => 'require',
