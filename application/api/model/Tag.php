@@ -1,12 +1,13 @@
 <?php
 
 namespace app\api\model;
-use think\Model;
 use app\lib\exception\BaseException;
-use think\model\concern\SoftDelete;
-class Tag extends Model
+// use think\model\concern\SoftDelete;
+use app\api\model\BaseModel;
+
+class Tag extends BaseModel
 {
-    use SoftDelete;
+    // use SoftDelete;
     public static function getTag($data)
     {
         $tag = static::limit($data['limit'])->page($data['page'])->select();
