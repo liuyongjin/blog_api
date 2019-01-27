@@ -14,15 +14,20 @@ class Article extends BaseValidate
         'description'=>'描述不能为空',
         'main_img'=>'主图不能为空'
     ];
+    //index 验证场景定义
+    public function sceneIndex()
+    {
+        return $this->only(['tag_id'])->append('tag_id', 'require|isPositiveInteger');
+    }  
     //add 验证场景定义
     public function sceneAdd()
     {
-        return $this->only(['title','description','main_img','tag_id'])->append('tag_id', 'require|isPositiveInteger');
+        return $this->only(['title','description','main_img','tags_id'])->append('tags_id', 'require|array');
     }  
     // edit 验证场景定义
     public function sceneEdit()
     {
-        return $this->only(['title','description','main_img','id'])->append('id', 'require|isPositiveInteger');
+        return $this->only(['title','description','main_img','id','tags_id'])->append('id', 'require|isPositiveInteger')->append('tags_id', 'require|array');
     }  
     // del 验证场景定义
     public function sceneDel()

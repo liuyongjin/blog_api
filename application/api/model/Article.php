@@ -4,6 +4,7 @@ namespace app\api\model;
 // use think\Model;
 use app\lib\exception\BaseException;
 use app\api\model\BaseModel;
+use think\Db;
 // use think\model\concern\SoftDelete;
 class Article extends BaseModel
 {
@@ -15,7 +16,25 @@ class Article extends BaseModel
 
     public static function getArticle($data)
     {
-        $article = static::with('tags')->limit($data['limit'])->page($data['page'])->select();
+        if(isset($data['tag_id'])){
+            //条件
+            $where=[
+                [
+                    'tag_id','=',$data['tag_id']
+                ]
+            ];
+           $tag_article=db('tag_article')->where($where)->select(); 
+           foreach ($tag_article as $key => $value) {
+               $article_ids[]=$value['article_id'];
+           }
+        }
+        //  var_dump($article_ids);
+        //  exit;
+        // $subSql = static::with('tags')->limit($data['limit'])->page($data['page'])->buildSql();
+        // $article =Db::table($subSql . ' article')->whereIn('id',$article_ids)->fetchSql(false)->select();
+        $article = static::with('tags')->limit($data['limit'])->page($data['page'])->fetchSql(false)->select();
+        // var_dump($article);
+        // exit;
         if(!$article){
             throw new BaseException(
             [
@@ -34,6 +53,12 @@ class Article extends BaseModel
         Db::startTrans();
         try {
             $article = self::create($data);
+            $res=self::get($article['id'])->tags()->saveAll(
+                $data['tags_id']
+            );
+            if(!$res){
+                throw new \Exception('新增文章失败');
+            }
             // 提交事务
             Db::commit();
         } catch (\Exception $e) {
@@ -48,13 +73,26 @@ class Article extends BaseModel
     }
     public static function editArticle($data)
     {
-        $article = (new Article)->save($data,['id' => $data['id']]);
-        if(!$article){
+        // 启动事务
+        Db::startTrans();
+        try {
+            $article = (new Article)->save($data,['id' => $data['id']]);
+            $res=self::get($data['id'])->tags()->saveAll(
+                $data['tags_id']
+            );
+            if(!$res){
+                throw new \Exception('更新文章失败');
+            }
+            // 提交事务
+            Db::commit();
+        } catch (\Exception $e) {
+            // 回滚事务
             throw new BaseException(
             [
-                'msg' => '编辑文章失败',
+                'msg' => '更新文章失败',
                 'errorCode'=>1
             ]);
+            Db::rollback();
         }
     }
     public static function delArticle($id)

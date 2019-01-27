@@ -12,6 +12,7 @@ class Article extends BaseController
     ];
 
     public function index(){
+        (new ArticleValidate())->scene('index')->goCheck();
         $data=input('post.');
         $data['limit']=intval($data['limit']??0)?:10;
         $data['page']=intval($data['page']??0)?:1;
