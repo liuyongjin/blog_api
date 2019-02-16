@@ -38,8 +38,16 @@ class Tag extends BaseController
     }
     public function bdel(){
         (new TagValidate())->scene('bdel')->goCheck();
-        $ids=input('post.ids');
+        // $ids=input('post.ids');
+        $ids=request()->post()['ids']; 
         // $ids=json_decode(input('post.ids'));
+        // if(count($ids)==1){
+        $ids=implode(",", $ids);
+        // }else{
+            // $ids=json_encode($ids);
+        // }        
+        // var_dump($ids);
+        // exit;
     	TagModel::bdelTag($ids);
         return $this->res([],"批量删除标签成功!");
     }

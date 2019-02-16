@@ -60,6 +60,9 @@ class Tag extends BaseModel
     public static function bdelTag($ids)
     {
         $tag = self::destroy($ids);
+        // var_dump($ids);
+        // var_dump($tag);
+        // exit;
         if(!$tag){
             throw new BaseException(
             [
