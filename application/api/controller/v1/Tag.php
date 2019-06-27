@@ -13,8 +13,9 @@ class Tag extends BaseController
 
     public function index(){
         $data=input('post.');
-        $data['limit']=intval($data['limit']??0)?:10;
-        $data['page']=intval($data['page']??0)?:1;
+        $data['pageSize']=intval($data['pageSize']??0)?:10;
+        $data['current']=intval($data['current']??0)?:1;
+        // $data['create_date']=isset($data['create_date'])?$data['create_date']:[];
     	$res=TagModel::getTag($data);
         return $this->res($res,"获取标签成功!");
     }

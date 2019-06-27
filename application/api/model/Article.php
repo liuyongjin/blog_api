@@ -5,9 +5,11 @@ namespace app\api\model;
 use app\lib\exception\BaseException;
 use app\api\model\BaseModel;
 use think\Db;
+use app\api\model\TagArticle;
 // use think\model\concern\SoftDelete;
 class Article extends BaseModel
 {
+    protected $hidden = ['tag_id','article_id','delete_time'];
     // use SoftDelete;
     // 定义多对多关系
     public function tags(){
@@ -16,25 +18,44 @@ class Article extends BaseModel
 
     public static function getArticle($data)
     {
-        if(isset($data['tag_id'])){
-            //条件
-            $where=[
-                [
-                    'tag_id','=',$data['tag_id']
-                ]
-            ];
-           $tag_article=db('tag_article')->where($where)->select(); 
-           foreach ($tag_article as $key => $value) {
-               $article_ids[]=$value['article_id'];
-           }
+        $resQuery=static::with('tags')->order('update_time','desc');
+        $countQuery=new Article();
+        //各种条件筛选
+        if(isset($data['tags_id'])){
+            //貌似laravel这样写可以
+            // $article = Article::with('tags')->whereHas('tags', function($query)use($data){
+            //     $query->where('id',$data['tag_id']);
+            // })->select();
+            $resQuery=$resQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
+            $countQuery =  $countQuery::alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
         }
-        //  var_dump($article_ids);
-        //  exit;
-        // $subSql = static::with('tags')->limit($data['limit'])->page($data['page'])->buildSql();
-        // $article =Db::table($subSql . ' article')->whereIn('id',$article_ids)->fetchSql(false)->select();
-        $article = static::with('tags')->limit($data['limit'])->page($data['page'])->fetchSql(false)->select();
+        if(isset($data['title'])){
+            $resQuery=$resQuery->whereLike('title',"%{$data['title']}%");
+            $countQuery = $countQuery->whereLike('title',"%{$data['title']}%");
+        }
+        if(isset($data['status'])){
+            $where=['status'=>$data['status']];
+            $resQuery=$resQuery->where($where);
+            $countQuery = $countQuery->where($where);
+        }
+        if(isset($data['create_date'])){
+            if(isset($data['tags_id'])){
+                $field='a.create_time';
+            }else{
+                $field='create_time';
+            }
+            $resQuery=$resQuery->where($field, 'between time', $data['create_date']);
+            $countQuery = $countQuery->where($field, 'between time', $data['create_date']);
+        }
+        if(isset($data['sorter'])){
+            $order=explode(" ", $data['sorter']);
+            $order[1]=='ascend'?$order[1]='asc':$order[1]='desc';
+            $resQuery=$resQuery->order($order[0],$order[1]);
+        }
+        $article=$resQuery->limit($data['pageSize'])->page($data['current'])->fetchSql(false)->select();
         // var_dump($article);
         // exit;
+        $count=$countQuery->count();
         if(!$article){
             throw new BaseException(
             [
@@ -42,9 +63,10 @@ class Article extends BaseModel
                 'errorCode'=>1
             ]);
         }
-        $count = static::with('tags')->limit($data['limit'])->page($data['page'])->count();
         $res['data']=$article;
         $res['total']=$count;
+        $res['pageSize']=$data['pageSize'];
+        $res['current']=$data['current'];
         return $res;
     }
     public static function addArticle($data)
@@ -77,11 +99,22 @@ class Article extends BaseModel
         Db::startTrans();
         try {
             $article = (new Article)->save($data,['id' => $data['id']]);
+            //删除之前有关的标签(中间表采用真实删除)
+            //软删除
+            // $del=TagArticle::where('article_id','=',$data['id'])->update(['delete_time'=>time()]);
+            //真删除
+            $del=self::get($data['id'])->tags()->where('article_id','=',$data['id'])->detach();
+            //新增标签
             $res=self::get($data['id'])->tags()->saveAll(
                 $data['tags_id']
             );
+          
             if(!$res){
-                throw new \Exception('更新文章失败');
+                throw new BaseException(
+                [
+                    'msg' => '更新文章失败',
+                    'errorCode'=>1
+                ]);
             }
             // 提交事务
             Db::commit();
@@ -95,10 +128,18 @@ class Article extends BaseModel
             Db::rollback();
         }
     }
+    public static function updateArticleStatus($data){
+        $res=Article::where('id', $data['id'])->update(['status' => $data['status']]);
+        if(!$res){
+            throw new BaseException(
+            [
+                'msg' => '更新文章状态失败',
+                'errorCode'=>1
+            ]);
+        }
+    }
     public static function delArticle($id)
     {
-        // var_dump(self::destroy($id));
-        // exit;
         // $article = self::get($id)->delete();
         $article = self::destroy($id);
         if(!$article){

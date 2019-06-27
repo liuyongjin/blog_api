@@ -11,20 +11,26 @@
 
 // Route::get('test', 'index/index/index');
 Route::group('api/:version',function(){
+    //上传图片
+    Route::post('upload', 'api/:version.Upload/upload');
    //登录
     Route::post('login', 'api/:version.User/login');
     //退出登录
     Route::post('logout', 'api/:version.User/logout');
     //注册
     Route::post('register', 'api/:version.User/register');
+    //获取个人信息
+    Route::get('currentUser', 'api/:version.User/currentUser');
     //修改个人信息
     Route::post('modifyInfo', 'api/:version.User/modifyInfo');
     //文章列表
-    Route::any('article/index', 'api/:version.Article/index');
+    Route::post('article/index', 'api/:version.Article/index');
     //新增文章
     Route::post('article/add', 'api/:version.Article/add');
     //编辑文章
     Route::post('article/edit', 'api/:version.Article/edit');
+    //更新文章状态
+    Route::post('article/updateStatus', 'api/:version.Article/updateStatus');
     //删除文章
     Route::post('article/del', 'api/:version.Article/del');
     //批量删除文章

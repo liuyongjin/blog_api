@@ -27,6 +27,7 @@ class BaseValidate extends Validate
                 [
                     // $this->error有一个问题，并不是一定返回数组，需要判断
                     'msg' => $this->getError(),
+                    'errorCode' => 0,
                     'code' => 200
                 ]);
             throw $exception;
@@ -41,7 +42,13 @@ class BaseValidate extends Validate
         }
         return $field . '必须是正整数';
     }
-
+    protected function isStatus($value, $rule='', $data='', $field='')
+    {
+        if (is_numeric($value) && ($value==1||$value==0)) {
+            return true;
+        }
+        return $field . '必须是0或者1';
+    }
     protected function isNotEmpty($value, $rule='', $data='', $field='')
     {
         if (empty($value)) {

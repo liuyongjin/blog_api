@@ -14,6 +14,7 @@ class User extends BaseController
     	$data=input('post.');
         if($token=UserModel::loginUser($data)){
           $res['token']=$token;
+          $res['currentAuthority']='admin';
         }
         return $this->res($res,'登录成功');
     }
@@ -35,6 +36,17 @@ class User extends BaseController
             return $this->res([],'退出登录失败',1);
         }
     }
+
+    public function currentUser()
+    {
+        $res=UserModel::getUserInfo();
+        if($res){
+            return $this->res($res,'获取成功');
+        }else{
+            return $this->res($res,'获取失败',1);
+        }
+    }
+
     public function modifyInfo(){
         (new UserValidate())->scene('edit')->goCheck();
     	$data=input('post.');

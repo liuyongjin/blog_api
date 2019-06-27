@@ -14,8 +14,8 @@ class Article extends BaseController
     public function index(){
         (new ArticleValidate())->scene('index')->goCheck();
         $data=input('post.');
-        $data['limit']=intval($data['limit']??0)?:10;
-        $data['page']=intval($data['page']??0)?:1;
+        $data['pageSize']=intval($data['pageSize']??0)?:10;
+        $data['current']=intval($data['current']??0)?:1;
     	$res=ArticleModel::getArticle($data);
         return $this->res($res,"获取文章成功!");
     }
@@ -24,6 +24,12 @@ class Article extends BaseController
         $data=input('post.');
     	ArticleModel::addArticle($data);
         return $this->res([],"新增文章成功!");
+    }
+    public function updateStatus(){
+        (new ArticleValidate())->scene('updateStatus')->goCheck();
+        $data=input('post.');
+        ArticleModel::updateArticleStatus($data);
+        return $this->res([],"更新文章状态成功!");
     }
     public function edit(){
         (new ArticleValidate())->scene('edit')->goCheck();
@@ -39,7 +45,7 @@ class Article extends BaseController
     }
     public function bdel(){
         (new ArticleValidate())->scene('bdel')->goCheck();
-        $ids=input('post.id');
+        $ids=input('post.ids');
     	ArticleModel::bdelArticle($ids);
         return $this->res([],"批量删除文章成功!");
     }

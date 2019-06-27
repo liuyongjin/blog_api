@@ -30,7 +30,7 @@ class Token
             $exception = new BaseException(
                 [
                     'msg' => '请输入token',
-                    'errorCode'=>1
+                    'errorCode'=>999
                 ]);
             throw $exception;
         }
@@ -42,7 +42,7 @@ class Token
             $exception = new BaseException(
                 [
                     'msg' => 'Token已过期或无效Token',
-                    'errorCode'=>1
+                    'errorCode'=>999
                 ]);
             throw $exception;
         }else{
@@ -50,7 +50,7 @@ class Token
                 $exception = new BaseException(
                     [
                         'msg' => '不是后台用户，无法操作后台',
-                        'errorCode'=>1
+                        'errorCode'=>999
                     ]);
                 throw $exception;
             }
@@ -64,7 +64,7 @@ class Token
             $exception = new BaseException(
                 [
                     'msg' => '请输入token',
-                    'errorCode'=>1
+                    'errorCode'=>999
                 ]);
             throw $exception;
         }
@@ -74,7 +74,7 @@ class Token
             $exception = new BaseException(
                 [
                     'msg' => 'Token已过期或无效Token',
-                    'errorCode'=>1
+                    'errorCode'=>999
                 ]);
             throw $exception;
         }else{
@@ -82,7 +82,7 @@ class Token
                 $exception = new BaseException(
                     [
                         'msg' => '不是会员用户',
-                        'errorCode'=>1
+                        'errorCode'=>999
                     ]);
                 throw $exception;
             }

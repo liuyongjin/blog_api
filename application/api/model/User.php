@@ -68,6 +68,12 @@ class User extends Model
     public static function logoutUser(){
         $token=request()->header('token');
         $res=cache($token,null);
+        (new User)->save(['token'=>''],['token'=>$token]);
+        return $res;
+    }
+    public static function getUserInfo(){
+        $token=request()->header('token');
+        $res=User::where('token','=',$token)->find();
         return $res;
     }
     public static function modifyUser($data){

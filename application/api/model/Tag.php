@@ -10,7 +10,20 @@ class Tag extends BaseModel
     // use SoftDelete;
     public static function getTag($data)
     {
-        $tag = static::limit($data['limit'])->page($data['page'])->select();
+        $resQuery=static::order('update_time','desc');
+        $countQuery=new Tag();
+        //既存在排序又存在搜索的时候
+        if(isset($data['create_date'])&&count($data['create_date'])>0){
+            $resQuery = $resQuery->where('create_time', 'between time', $data['create_date']);
+            $countQuery = $countQuery->where('create_time', 'between time', $data['create_date']);
+        }
+        if(isset($data['sorter'])){
+            $order=explode(" ", $data['sorter']);
+            $order[1]=='ascend'?$order[1]='asc':$order[1]='desc';
+            $resQuery = $resQuery->order($order[0],$order[1]);
+        }
+        $tag=$resQuery->limit($data['pageSize'])->page($data['current'])->select();
+        $count=$countQuery->count();
         if(!$tag){
             throw new BaseException(
             [
@@ -18,9 +31,10 @@ class Tag extends BaseModel
                 'errorCode'=>1
             ]);
         }
-        $count = static::limit($data['limit'])->page($data['page'])->count();
         $res['data']=$tag;
         $res['total']=$count;
+        $res['pageSize']=$data['pageSize'];
+        $res['current']=$data['current'];
         return $res;
     }
     public static function addTag($data)

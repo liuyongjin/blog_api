@@ -46,7 +46,13 @@ class ExceptionHandler extends Handle
         $result = [
             'msg'  => $this->msg,
             'errorCode' => $this->errorCode,
-            // 'request_url' => $request = request()->url()
+            'request_url' => $request = request()->url(),
+            'data'=>[
+                'data'=>[],
+                'current'=>1,
+                'pageSize'=>10,
+                'total'=>0
+            ]
         ];
         return json($result, $this->code);
     }
@@ -61,7 +67,7 @@ class ExceptionHandler extends Handle
             'path'  =>  LOG_PATH,
             'level' => ['error']
         ]);
-//        Log::record($e->getTraceAsString());
+        Log::record($e->getTraceAsString());
         Log::record($e->getMessage(),'error');
     }
 }
