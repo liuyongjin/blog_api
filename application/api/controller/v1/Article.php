@@ -8,7 +8,7 @@ use app\api\validate\Article as ArticleValidate;
 class Article extends BaseController
 {
 	protected $beforeActionList = [
-       'checkPrimaryScope' => ['except' => '']
+       'checkPrimaryScope' => ['except' => 'pigeonholeList,index,randomList,detail,praise,browse']
     ];
 
     public function index(){
@@ -18,6 +18,40 @@ class Article extends BaseController
         $data['current']=intval($data['current']??0)?:1;
     	$res=ArticleModel::getArticle($data);
         return $this->res($res,"获取文章成功!");
+    }
+
+    //前台博客归档接口
+    public function pigeonholeList(){
+        $res=ArticleModel::getPigeonhole();
+        return $this->res($res,"获取文章成功!");
+    }
+    //随机文章获取
+    public function randomList(){
+        $data=input('post.');
+        $data['pageSize']=intval($data['pageSize']??0)?:8;
+        $res=ArticleModel::getRandomList($data);
+        return $this->res($res,"获取文章成功!");
+    }
+    //获取文章详情
+    public function detail(){
+        (new ArticleValidate())->scene('detail')->goCheck();
+        $data=input('post.');
+        $res=ArticleModel::getDetail($data);
+        return $this->res($res,"获取文章详情!");
+    }
+    //浏览量加一
+    public function browse(){
+        (new ArticleValidate())->scene('detail')->goCheck();
+        $data=input('post.');
+        $res=ArticleModel::browseInc($data);
+        return $this->res($res,"操作成功!");
+    }
+    //点赞加一
+    public function praise(){
+        (new ArticleValidate())->scene('detail')->goCheck();
+        $data=input('post.');
+        $res=ArticleModel::praiseInc($data);
+        return $this->res($res,"操作成功!");
     }
     public function add(){
         (new ArticleValidate())->scene('add')->goCheck();

@@ -8,7 +8,7 @@ use app\api\validate\Tag as TagValidate;
 class Tag extends BaseController
 {
 	protected $beforeActionList = [
-       'checkPrimaryScope' => ['except' => '']
+       'checkPrimaryScope' => ['except' => 'index']
     ];
 
     public function index(){

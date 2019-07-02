@@ -16,17 +16,104 @@ class Article extends BaseModel
         return $this->belongsToMany('tag','tag_article','tag_id','article_id');
     }
 
+    public static function getPigeonhole(){
+        $article_time=self::field('create_time')->order('create_time desc')->select()->toArray();
+        $arr = array();
+        foreach ($article_time as $k => $v) {
+            $arr[] = date('Y-m',strtotime($v['create_time']));
+        }
+        //去掉相同的数组时间
+        $arr = array_unique($arr);
+        $article=[];
+        //按时间排序文档
+        foreach ($arr as $k => $v) {
+            //每月第一天开始到下一个月第一天
+            $start = date('Y-m-01', strtotime($v));
+            $end = date("Y-m-d",strtotime("$start+1 month-1 day"));
+            $limit_result = self::field('id,title,create_time')->whereTime('create_time','between',["$start","$end"])->order('create_time desc')->select()->toArray();
+            //将时间存入数组
+            $article[$v]=$limit_result;
+        }
+     
+        $count=0;
+        foreach ($article as $key => $value) {
+            $count+=count($value);
+        };
+        if(!$article){
+            throw new BaseException(
+            [
+                'msg' => '获取文章失败',
+                'errorCode'=>1
+            ]);
+        }
+        $res['data']=$article;
+        $res['total']=$count;
+        return $res;
+    }
+
+    public static function getRandomList($data){
+        $article=self::orderRaw('rand()')->limit($data['pageSize'])->select();
+        if(!$article){
+            throw new BaseException(
+            [
+                'msg' => '获取文章失败',
+                'errorCode'=>1
+            ]);
+        }
+        $count=self::count();
+        $res['data']=$article;
+        $res['total']=$count;
+        return $res;
+    }
+    public static function getDetail($data){
+        $article=self::with('tags')->field('id,title,des,content,comment_count,praise_count,browse_count,create_time,update_time')->where('id','=',$data['id'])->find();
+        if(!$article){
+            throw new BaseException(
+            [
+                'msg' => '获取文章详情失败',
+                'errorCode'=>1
+            ]);
+        }
+        $count=1;
+        $res['data']=$article;
+        $res['total']=$count;
+        return $res;
+    }
+    public static function praiseInc($data){
+        //给点赞量加一
+        $article=self::where('id','=',$data['id'])->setInc('praise_count', 1);
+        if(!$article){
+            throw new BaseException(
+            [
+                'msg' => '操作失败!',
+                'errorCode'=>1
+            ]);
+        }
+        return [];
+    }
+    public static function browseInc($data){
+        //给点赞量加一
+        $article=self::where('id','=',$data['id'])->setInc('browse_count', 1);
+        if(!$article){
+            throw new BaseException(
+            [
+                'msg' => '操作失败!',
+                'errorCode'=>1
+            ]);
+        }
+        return [];
+    }
     public static function getArticle($data)
     {
-        $resQuery=static::with('tags')->order('update_time','desc');
+        $resQuery=static::with('tags');
         $countQuery=new Article();
         //各种条件筛选
-        if(isset($data['tags_id'])){
+        if(isset($data['tags_id']) && count($data['tags_id'])>0){
             //貌似laravel这样写可以
             // $article = Article::with('tags')->whereHas('tags', function($query)use($data){
             //     $query->where('id',$data['tag_id']);
             // })->select();
-            $resQuery=$resQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
+            $resQuery=$resQuery->alias('a')->field('a.id,a.title,a.status,a.des,a.main_img,a.content,a.comment_count,a.praise_count,a.browse_count,a.create_time,a.update_time')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
             $countQuery =  $countQuery::alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
         }
         if(isset($data['title'])){
@@ -39,7 +126,7 @@ class Article extends BaseModel
             $countQuery = $countQuery->where($where);
         }
         if(isset($data['create_date'])){
-            if(isset($data['tags_id'])){
+            if(isset($data['tags_id']) && count($data['tags_id'])>0){
                 $field='a.create_time';
             }else{
                 $field='create_time';
@@ -50,6 +137,10 @@ class Article extends BaseModel
         if(isset($data['sorter'])){
             $order=explode(" ", $data['sorter']);
             $order[1]=='ascend'?$order[1]='asc':$order[1]='desc';
+            //如果存在联合查询指定别名
+            if(isset($data['tags_id']) && count($data['tags_id'])>0){
+                $order[0]='a.'.$order[0];
+            }
             $resQuery=$resQuery->order($order[0],$order[1]);
         }
         $article=$resQuery->limit($data['pageSize'])->page($data['current'])->fetchSql(false)->select();

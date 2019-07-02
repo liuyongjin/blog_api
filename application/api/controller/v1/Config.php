@@ -8,14 +8,11 @@ use app\api\validate\Config as ConfigValidate;
 class Config extends BaseController
 {
 	protected $beforeActionList = [
-       'checkPrimaryScope' => ['except' => '']
+       'checkPrimaryScope' => ['except' => 'index']
     ];
 
     public function index(){
-        $data=input('post.');
-        $data['limit']=intval($data['limit']??0)?:10;
-        $data['page']=intval($data['page']??0)?:1;
-    	$res=ConfigModel::getConfig($data);
+    	$res=ConfigModel::getConfig();
         return $this->res($res,"获取配置成功!");
     }
     public function add(){

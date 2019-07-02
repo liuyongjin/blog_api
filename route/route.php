@@ -25,6 +25,16 @@ Route::group('api/:version',function(){
     Route::post('modifyInfo', 'api/:version.User/modifyInfo');
     //文章列表
     Route::post('article/index', 'api/:version.Article/index');
+    //归档文章列表
+    Route::post('article/pigeonholeList', 'api/:version.Article/pigeonholeList');
+    //获取随机文章
+    Route::post('article/randomList', 'api/:version.Article/randomList');
+    //获取文章详情
+    Route::post('article/detail', 'api/:version.Article/detail');
+    //点赞
+    Route::post('article/praise', 'api/:version.Article/praise');
+    //浏览量加一
+    Route::post('article/browse', 'api/:version.Article/browse');
     //新增文章
     Route::post('article/add', 'api/:version.Article/add');
     //编辑文章

@@ -21,6 +21,11 @@ class Article extends BaseValidate
     {
         return $this->only(['tags_id'])->append('tags_id', 'array');
     }  
+    //detail 验证场景定义
+    public function sceneDetail()
+    {
+        return $this->only(['id'])->append('id', 'require|isPositiveInteger');
+    }  
     //updateStatus 验证场景定义
     public function sceneUpdateStatus()
     {

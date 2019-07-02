@@ -1,15 +1,18 @@
 <?php
 
 namespace app\api\model;
-use think\Model;
 use app\lib\exception\BaseException;
-use think\model\concern\SoftDelete;
-class Config extends Model
+use app\api\model\Article as ArticleModel;
+use app\api\model\Tag as TagModel;
+use app\api\model\BaseModel;
+
+class Config extends BaseModel
 {
-    use SoftDelete;
-    public static function getConfig($data)
+    const CONFIG_APP=300;
+    public static function getConfig()
     {
-        $config = static::limit($data['limit'])->page($data['page'])->select();
+        self::updateValue();
+        $config = static::field('id,config_name,config_value,config_ext')->where('config_app','=',self::CONFIG_APP)->order('id','asc')->select();
         if(!$config){
             throw new BaseException(
             [
@@ -17,11 +20,25 @@ class Config extends Model
                 'errorCode'=>1
             ]);
         }
-        $count = static::limit($data['limit'])->page($data['page'])->count();
+        $count = static::where('config_app','=',self::CONFIG_APP)->count();
         $res['data']=$config;
         $res['total']=$count;
-        return $config;
+        return $res;
     }
+    //更新字段
+    public static function updateValue(){
+        $article_count=ArticleModel::count();
+        $tag_count=TagModel::count();
+        $visits=intval(ArticleModel::field('browse_count')->sum('browse_count'));
+        $list = [
+            ['id'=>1, 'config_value'=>$visits],
+            ['id'=>2, 'config_value'=>$article_count],
+            ['id'=>3, 'config_value'=>$tag_count]
+        ];
+        $config=new Config();
+        $config->saveAll($list);
+    }
+
     public static function addConfig($data)
     {
         //新增配置从配置中获取值config_app,100是front,200是wap,300是后台，默认取后台配置
