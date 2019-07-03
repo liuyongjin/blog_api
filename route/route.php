@@ -9,7 +9,6 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// Route::get('test', 'index/index/index');
 Route::group('api/:version',function(){
     //上传图片
     Route::post('upload', 'api/:version.Upload/upload');
@@ -90,7 +89,7 @@ Route::group('api/:version',function(){
     //会员退出登录
     Route::post('member/logout', 'api/:version.Member/logout');
 });
-
+// Route::get('test', 'index/index/index');
 
 // return [
 
