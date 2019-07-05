@@ -15,29 +15,4 @@ class Config extends BaseController
     	$res=ConfigModel::getConfig();
         return $this->res($res,"获取配置成功!");
     }
-    public function add(){
-        (new ConfigValidate())->goCheck();
-        $data=input('post.');
-    	ConfigModel::addConfig($data);
-        return $this->res([],"新增配置成功!");
-    }
-    public function edit(){
-        (new ConfigValidate())->scene('edit')->goCheck();
-        $data=input('post.');
-    	$res=ConfigModel::editConfig($data);
-        return $this->res([],"编辑配置成功!");
-    }
-    public function del(){
-        (new ConfigValidate())->scene('del')->goCheck();
-        $id=input('post.id');
-    	ConfigModel::delConfig($id);
-        return $this->res([],"删除配置成功!");
-    }
-    public function bdel(){
-        (new ConfigValidate())->scene('bdel')->goCheck();
-        // $ids=json_decode(input('post.ids'));
-        $ids=input('post.ids');
-    	ConfigModel::bdelConfig($ids);
-        return $this->res([],"批量删除配置成功!");
-    }
 }

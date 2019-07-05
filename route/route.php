@@ -16,12 +16,14 @@ Route::group('api/:version',function(){
     Route::post('login', 'api/:version.User/login');
     //退出登录
     Route::post('logout', 'api/:version.User/logout');
-    //注册
-    Route::post('register', 'api/:version.User/register');
+    //注册（不开放注册接口）
+    // Route::post('register', 'api/:version.User/register');
     //获取个人信息
     Route::get('currentUser', 'api/:version.User/currentUser');
     //修改个人信息
     Route::post('modifyInfo', 'api/:version.User/modifyInfo');
+    //修改个人头像
+    Route::post('modifyAvatar', 'api/:version.User/modifyAvatar');
     //文章列表
     Route::post('article/index', 'api/:version.Article/index');
     //归档文章列表
@@ -66,31 +68,6 @@ Route::group('api/:version',function(){
     Route::post('tag/bdel', 'api/:version.Tag/bdel');
     //配置列表
     Route::post('config/index', 'api/:version.Config/index');
-    //新增配置
-    Route::post('config/add', 'api/:version.Config/add');
-    //编辑配置
-    Route::post('config/edit', 'api/:version.Config/edit');
-    //删除配置
-    Route::post('config/del', 'api/:version.Config/del');
-    //批量删除配置
-    Route::post('config/bdel', 'api/:version.Config/bdel');
-    //会员列表
-    Route::post('member/index', 'api/:version.Member/index');
-    //新增会员
-    Route::post('member/add', 'api/:version.Member/add');
-    //编辑会员
-    Route::post('member/edit', 'api/:version.Member/edit');
-    //删除会员
-    Route::post('member/del', 'api/:version.Member/del');
-    //批量删除会员
-    Route::post('member/bdel', 'api/:version.Member/bdel');
-    //会员登录
-    Route::post('member/login', 'api/:version.Member/login');
-    //会员退出登录
-    Route::post('member/logout', 'api/:version.Member/logout');
 });
 // Route::get('test', 'index/index/index');
 
-// return [
-
-// ];

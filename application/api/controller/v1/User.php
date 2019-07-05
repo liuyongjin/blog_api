@@ -6,7 +6,7 @@ use app\api\validate\User as UserValidate;
 class User extends BaseController
 {
     protected $beforeActionList = [
-       'checkPrimaryScope' => ['only' => 'modifyInfo,logout']
+       'checkPrimaryScope' => ['only' => 'modifyInfo,logout,currentUser,modifyAvatar']
     ];
     public function login()
     {
@@ -18,16 +18,27 @@ class User extends BaseController
         }
         return $this->res($res,'登录成功');
     }
-    public function register()
-    {
-        (new UserValidate())->goCheck();
-    	$data=input('post.');
-        if(UserModel::registerUser($data)){
-            return $this->res([],'注册成功');
+    // （不开放注册接口）
+    // public function register()
+    // {
+    //     (new UserValidate())->goCheck();
+    // 	$data=input('post.');
+    //     if(UserModel::registerUser($data)){
+    //         return $this->res([],'注册成功');
+    //     }else{
+    //         return $this->res([],'注册失败',1);
+    //     }
+    // }
+    public function modifyAvatar(){
+        (new UserValidate())->scene('editAvatar')->goCheck();
+        $data=input('post.');
+        if(UserModel::modifyUserAvatar($data)){
+            return $this->res([],'修改成功');
         }else{
-            return $this->res([],'注册失败',1);
+            return $this->res([],'修改失败',1);
         }
     }
+
     public function logout()
     {
         if(UserModel::logoutUser()){

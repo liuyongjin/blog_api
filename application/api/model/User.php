@@ -7,6 +7,8 @@ use app\api\service\Token as TokenService;
 
 class User extends Model
 {
+    protected $hidden = ['token','password'];
+
     public static function loginUser($data)
     {
         $user = User::where('username','=',$data['username'])->find();
@@ -48,23 +50,24 @@ class User extends Model
             return $token;
         }
     }
-    public static function registerUser($data){
-        $user = User::where('username','=',$data['username'])->find();
-        if($user){
-            throw new BaseException(
-            [
-                'msg' => '用户名已经存在',
-                'errorCode'=>1
-            ]);
-        }
-        $data['password']=encryption($data['password']);
-        $res=User::create($data);
-        if($res){
-            return true;
-        }else{
-            return false;
-        }
-    }
+    // （不开放注册接口）
+    // public static function registerUser($data){
+    //     $user = User::where('username','=',$data['username'])->find();
+    //     if($user){
+    //         throw new BaseException(
+    //         [
+    //             'msg' => '用户名已经存在',
+    //             'errorCode'=>1
+    //         ]);
+    //     }
+    //     $data['password']=encryption($data['password']);
+    //     $res=User::create($data);
+    //     if($res){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
     public static function logoutUser(){
         $token=request()->header('token');
         $res=cache($token,null);
@@ -88,13 +91,23 @@ class User extends Model
             throw new BaseException(
             [
                 'msg' => '用户名已经存在',
-                'errorCode'=>1
+                'errorCode'=>0
             ]);
         }
         //更新信息
         $data['password']=encryption($data['password']);
         $res=(new User)->save(
         $data,
+            [
+                'token'=>$token
+            ]
+        );
+        return $res;
+    }
+    public static function modifyUserAvatar($data){
+        $token=request()->header('token');
+        $res=(new User)->save(
+        ['avatar'=>$data['avatar']],
             [
                 'token'=>$token
             ]
