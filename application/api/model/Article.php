@@ -99,7 +99,6 @@ class Article extends BaseModel
     public static function getArticle($data)
     {
         $resQuery=static::with('tags');
-        $where=['status'=>1];
         $countQuery=new Article();
         //各种条件筛选
         if(isset($data['tags_id']) && count($data['tags_id'])>0){
@@ -116,8 +115,8 @@ class Article extends BaseModel
         }
         if(isset($data['status'])){
             $where=['status'=>$data['status']];
-            // $resQuery=$resQuery->where($where);
-            // $countQuery = $countQuery->where($where);
+            $resQuery=$resQuery->where($where);
+            $countQuery = $countQuery->where($where);
         }
         if(isset($data['create_date'])){
             if(isset($data['tags_id']) && count($data['tags_id'])>0){
@@ -137,10 +136,10 @@ class Article extends BaseModel
             }
             $resQuery=$resQuery->order($order[0],$order[1]);
         }
-        $article=$resQuery->where($where)->limit($data['pageSize'])->page($data['current'])->fetchSql(false)->select();
+        $article=$resQuery->limit($data['pageSize'])->page($data['current'])->fetchSql(false)->select();
         // var_dump($article);
         // exit;
-        $count=$countQuery->where($where)->count();
+        $count=$countQuery->count();
         if(!$article){
             throw new BaseException(
             [
