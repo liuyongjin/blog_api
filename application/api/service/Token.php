@@ -57,36 +57,36 @@ class Token
         }
         return $vars;
     }
-    public static function verifyIdentity()
-    {
-        $token = request()->header('token');
-        if(!$token){
-            $exception = new BaseException(
-                [
-                    'msg' => '请输入token',
-                    'errorCode'=>999
-                ]);
-            throw $exception;
-        }
-        $vars = cache($token);
-        if (!$vars)
-        {
-            $exception = new BaseException(
-                [
-                    'msg' => 'Token已过期或无效Token',
-                    'errorCode'=>999
-                ]);
-            throw $exception;
-        }else{
-            if($vars['auth']!=='member'){
-                $exception = new BaseException(
-                    [
-                        'msg' => '不是会员用户',
-                        'errorCode'=>999
-                    ]);
-                throw $exception;
-            }
-        }
-        return $vars;
-    }
+    // public static function verifyIdentity()
+    // {
+    //     $token = request()->header('token');
+    //     if(!$token){
+    //         $exception = new BaseException(
+    //             [
+    //                 'msg' => '请输入token',
+    //                 'errorCode'=>999
+    //             ]);
+    //         throw $exception;
+    //     }
+    //     $vars = cache($token);
+    //     if (!$vars)
+    //     {
+    //         $exception = new BaseException(
+    //             [
+    //                 'msg' => 'Token已过期或无效Token',
+    //                 'errorCode'=>999
+    //             ]);
+    //         throw $exception;
+    //     }else{
+    //         if($vars['auth']!=='member'){
+    //             $exception = new BaseException(
+    //                 [
+    //                     'msg' => '不是会员用户',
+    //                     'errorCode'=>999
+    //                 ]);
+    //             throw $exception;
+    //         }
+    //     }
+    //     return $vars;
+    // }
 }

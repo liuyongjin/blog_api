@@ -18,8 +18,8 @@ class BaseController extends Controller
         Token::needPrimaryScope();
     }
     //前台会员验证
-    protected function checkMemberIdentity()
-    {
-        Token::verifyIdentity();
-    }
+    // protected function checkMemberIdentity()
+    // {
+    //     Token::verifyIdentity();
+    // }
 }

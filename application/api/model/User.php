@@ -3,6 +3,7 @@
 namespace app\api\model;
 use think\Model;
 use app\lib\exception\BaseException;
+use app\api\model\LoginLog as LoginLogModel;
 use app\api\service\Token as TokenService;
 
 class User extends Model
@@ -47,6 +48,13 @@ class User extends Model
                     'errorCode' => 10005
                 ]);
             }
+            //记录登录信息
+            LoginLogModel::saveLog([
+                'login_name'=>$data['username'],
+                'login_ip'=>$ip,
+                'login_time'=>time()
+            ]);
+
             return $token;
         }
     }
