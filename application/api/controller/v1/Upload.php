@@ -19,7 +19,7 @@ class Upload extends BaseController
         if($file){
             // $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif'])->move('..\public\uploads');
             // linux使用绝对路径
-            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif'])->move('\uploads');
+            $info = $file->validate(['size'=>5*1024*1024,'ext'=>'jpg,png,gif'])->move('uploads');
             if($info){
                 $data['file_url']=str_replace("\\","/","\\uploads\\".$info->getSaveName());
                 return $this->res($data,"上传文件成功!");
