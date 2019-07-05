@@ -39,13 +39,6 @@ class Article extends BaseModel
         foreach ($article as $key => $value) {
             $count+=count($value);
         };
-        if(!$article){
-            throw new BaseException(
-            [
-                'msg' => '获取文章失败',
-                'errorCode'=>1
-            ]);
-        }
         $res['data']=$article;
         $res['total']=$count;
         return $res;
