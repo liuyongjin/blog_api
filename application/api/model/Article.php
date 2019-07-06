@@ -97,12 +97,16 @@ class Article extends BaseModel
         return [];
     }
 
-    public static function searchArticleByTitle($data){
+    public static function searchArticleByTitleOrTag($data){
         $resQuery=new Article();
         $countQuery=new Article();
         if(isset($data['title'])){
             $resQuery=$resQuery->whereLike('title',"%{$data['title']}%");
             $countQuery = $countQuery->whereLike('title',"%{$data['title']}%");
+        }
+        if(isset($data['tag_id'])){
+            $resQuery=$resQuery->alias('a')->field('a.id,a.title,a.status,a.des,a.main_img,a.content,a.comment_count,a.praise_count,a.browse_count,a.create_time,a.update_time')->join(['tag_article'=>'b'],'a.id = b.article_id')->where('b.tag_id','=',$data['tag_id']);
+            $countQuery =  $countQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->where('b.tag_id','=',$data['tag_id']);
         }
         $article=$resQuery->where(['status'=>1])->select();
         $count=$countQuery->where(['status'=>1])->count();
@@ -129,7 +133,7 @@ class Article extends BaseModel
             //     $query->where('id',$data['tag_id']);
             // })->select();
             $resQuery=$resQuery->alias('a')->field('a.id,a.title,a.status,a.des,a.main_img,a.content,a.comment_count,a.praise_count,a.browse_count,a.create_time,a.update_time')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
-            $countQuery =  $countQuery::alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
+            $countQuery =  $countQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
         }
         if(isset($data['title'])){
             $resQuery=$resQuery->whereLike('title',"%{$data['title']}%");

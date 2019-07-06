@@ -21,8 +21,9 @@ class Article extends BaseController
     }
     //前台文章搜索接口
     public function searchArticle(){
+        (new ArticleValidate())->scene('search')->goCheck();
         $data=input('post.');
-        $res=ArticleModel::searchArticleByTitle($data);
+        $res=ArticleModel::searchArticleByTitleOrTag($data);
         return $this->res($res,"获取文章成功!");
     }
 
