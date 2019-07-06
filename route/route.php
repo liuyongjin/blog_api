@@ -26,6 +26,8 @@ Route::group('api/:version',function(){
     Route::post('modifyAvatar', 'api/:version.User/modifyAvatar');
     //文章列表
     Route::post('article/index', 'api/:version.Article/index');
+    //搜索文章
+    Route::post('article/searchArticle', 'api/:version.Article/searchArticle');
     //归档文章列表
     Route::post('article/pigeonholeList', 'api/:version.Article/pigeonholeList');
     //获取随机文章

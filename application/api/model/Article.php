@@ -17,7 +17,7 @@ class Article extends BaseModel
     }
 
     public static function getPigeonhole(){
-        $article_time=self::field('create_time')->order('create_time desc')->select()->toArray();
+        $article_time=self::field('create_time')->where(['status'=>1])->order('create_time desc')->select()->toArray();
         $arr = array();
         foreach ($article_time as $k => $v) {
             $arr[] = date('Y-m',strtotime($v['create_time']));
@@ -30,7 +30,7 @@ class Article extends BaseModel
             //每月第一天开始到下一个月第一天
             $start = date('Y-m-01', strtotime($v));
             $end = date("Y-m-d",strtotime("$start+1 month-1 day"));
-            $limit_result = self::field('id,title,create_time')->whereTime('create_time','between',["$start","$end"])->order('create_time desc')->select()->toArray();
+            $limit_result = self::field('id,title,create_time')->where(['status'=>1])->whereTime('create_time','between',["$start","$end"])->order('create_time desc')->select()->toArray();
             //将时间存入数组
             $article[$v]=$limit_result;
         }
@@ -45,7 +45,7 @@ class Article extends BaseModel
     }
 
     public static function getRandomList($data){
-        $article=self::orderRaw('rand()')->limit($data['pageSize'])->select();
+        $article=self::orderRaw('rand()')->limit($data['pageSize'])->where(['status'=>1])->select();
         if(!$article){
             throw new BaseException(
             [
@@ -59,7 +59,7 @@ class Article extends BaseModel
         return $res;
     }
     public static function getDetail($data){
-        $article=self::with('tags')->field('id,title,des,content,comment_count,praise_count,browse_count,create_time,update_time')->where('id','=',$data['id'])->find();
+        $article=self::with('tags')->field('id,title,des,content,comment_count,praise_count,browse_count,create_time,update_time')->where('id','=',$data['id'])->where(['status'=>1])->find();
         if(!$article){
             throw new BaseException(
             [
@@ -96,6 +96,28 @@ class Article extends BaseModel
         }
         return [];
     }
+
+    public static function searchArticleByTitle($data){
+        $resQuery=new Article();
+        $countQuery=new Article();
+        if(isset($data['title'])){
+            $resQuery=$resQuery->whereLike('title',"%{$data['title']}%");
+            $countQuery = $countQuery->whereLike('title',"%{$data['title']}%");
+        }
+        $article=$resQuery->where(['status'=>1])->select();
+        $count=$countQuery->where(['status'=>1])->count();
+        if(!$article){
+            throw new BaseException(
+            [
+                'msg' => '获取文章失败',
+                'errorCode'=>1
+            ]);
+        }
+        $res['data']=$article;
+        $res['total']=$count;
+        return $res;
+    }
+
     public static function getArticle($data)
     {
         $resQuery=static::with('tags');

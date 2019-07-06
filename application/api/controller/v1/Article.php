@@ -8,7 +8,7 @@ use app\api\validate\Article as ArticleValidate;
 class Article extends BaseController
 {
 	protected $beforeActionList = [
-       'checkPrimaryScope' => ['except' => 'pigeonholeList,index,randomList,detail,praise,browse']
+       'checkPrimaryScope' => ['except' => 'pigeonholeList,index,randomList,detail,praise,browse,searchArticle']
     ];
 
     public function index(){
@@ -17,6 +17,12 @@ class Article extends BaseController
         $data['pageSize']=intval($data['pageSize']??0)?:10;
         $data['current']=intval($data['current']??0)?:1;
     	$res=ArticleModel::getArticle($data);
+        return $this->res($res,"获取文章成功!");
+    }
+    //前台文章搜索接口
+    public function searchArticle(){
+        $data=input('post.');
+        $res=ArticleModel::searchArticleByTitle($data);
         return $this->res($res,"获取文章成功!");
     }
 
