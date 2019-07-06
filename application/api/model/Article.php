@@ -105,7 +105,7 @@ class Article extends BaseModel
             $countQuery = $countQuery->whereLike('title',"%{$data['title']}%");
         }
         if(isset($data['tag_id'])){
-            $resQuery=$resQuery->alias('a')->field('a.id,a.title,a.status,a.des,a.main_img,a.content,a.comment_count,a.praise_count,a.browse_count,a.create_time,a.update_time')->join(['tag_article'=>'b'],'a.id = b.article_id')->where('b.tag_id','=',$data['tag_id']);
+            $resQuery=$resQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->where('b.tag_id','=',$data['tag_id']);
             $countQuery =  $countQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->where('b.tag_id','=',$data['tag_id']);
         }
         $article=$resQuery->where(['status'=>1])->select();
