@@ -6,7 +6,7 @@
 
 >  开发环境 windows+apache+mysql+php7.1
 
->  部署环境 linux+nginx+mysql+php 地址：[https://api.liuyongjin.cn](https://api.liuyongjin.cn)
+>  部署环境 linux+nginx+mysql+php 地址：[http://api.liuyongjin.cn](http://api.liuyongjin.cn)
 
 >  相关项目地址：
 
@@ -24,62 +24,62 @@ thinkphp5.1+mysql
 
 ## 接口列表：
 
-[1、上传图片:https://api.liuyongjin.cn/api/v1/upload](https://api.liuyongjin.cn/api/v1/upload)<br/>
+[1、上传图片:http://api.liuyongjin.cn/api/v1/upload](http://api.liuyongjin.cn/api/v1/upload)<br/>
 
-[2、登录:https://api.liuyongjin.cn/api/v1/login](https://api.liuyongjin.cn/api/v1/login)<br/>
+[2、登录:http://api.liuyongjin.cn/api/v1/login](http://api.liuyongjin.cn/api/v1/login)<br/>
 
-[3、退出登录:https://api.liuyongjin.cn/api/v1/logout](https://api.liuyongjin.cn/api/v1/logout)<br/>
+[3、退出登录:http://api.liuyongjin.cn/api/v1/logout](http://api.liuyongjin.cn/api/v1/logout)<br/>
 
-[4、获取个人信息:https://api.liuyongjin.cn/api/v1/currentUser](https://api.liuyongjin.cn/api/v1/currentUser)<br/>
+[4、获取个人信息:http://api.liuyongjin.cn/api/v1/currentUser](http://api.liuyongjin.cn/api/v1/currentUser)<br/>
 
-[5、修改个人信息:https://api.liuyongjin.cn/api/v1/modifyInfo](https://api.liuyongjin.cn/api/v1/modifyInfo)<br/>
+[5、修改个人信息:http://api.liuyongjin.cn/api/v1/modifyInfo](http://api.liuyongjin.cn/api/v1/modifyInfo)<br/>
 
-[6、修改个人头像:https://api.liuyongjin.cn/api/v1/modifyAvatar](https://api.liuyongjin.cn/api/v1/modifyAvatar)<br/>
+[6、修改个人头像:http://api.liuyongjin.cn/api/v1/modifyAvatar](http://api.liuyongjin.cn/api/v1/modifyAvatar)<br/>
 
-[7、文章列表:https://api.liuyongjin.cn/api/v1/article/index](https://api.liuyongjin.cn/api/v1/article/index)<br/>
+[7、文章列表:http://api.liuyongjin.cn/api/v1/article/index](http://api.liuyongjin.cn/api/v1/article/index)<br/>
 
-[8、搜索文章:https://api.liuyongjin.cn/api/v1/article/searchArticle](https://api.liuyongjin.cn/api/v1/article/searchArticle)<br/>
+[8、搜索文章:http://api.liuyongjin.cn/api/v1/article/searchArticle](http://api.liuyongjin.cn/api/v1/article/searchArticle)<br/>
 
-[9、修改个人信息:https://api.liuyongjin.cn/api/v1/modifyInfo](https://api.liuyongjin.cn/api/v1/modifyInfo)<br/>
+[9、修改个人信息:http://api.liuyongjin.cn/api/v1/modifyInfo](http://api.liuyongjin.cn/api/v1/modifyInfo)<br/>
 
-[10、归档文章列表:https://api.liuyongjin.cn/api/v1/article/pigeonholeList](https://api.liuyongjin.cn/api/v1/article/pigeonholeList)<br/>
+[10、归档文章列表:http://api.liuyongjin.cn/api/v1/article/pigeonholeList](http://api.liuyongjin.cn/api/v1/article/pigeonholeList)<br/>
 
-[11、获取随机文章:https://api.liuyongjin.cn/api/v1/article/randomList](https://api.liuyongjin.cn/api/v1/article/randomList)<br/>
+[11、获取随机文章:http://api.liuyongjin.cn/api/v1/article/randomList](http://api.liuyongjin.cn/api/v1/article/randomList)<br/>
 
-[12、获取文章详情:https://api.liuyongjin.cn/api/v1/article/detail](https://api.liuyongjin.cn/api/v1/article/detail)<br/>
+[12、获取文章详情:http://api.liuyongjin.cn/api/v1/article/detail](http://api.liuyongjin.cn/api/v1/article/detail)<br/>
 
-[13、点赞:https://api.liuyongjin.cn/api/v1/article/praise](https://api.liuyongjin.cn/api/v1/article/praise)<br/>
+[13、点赞:http://api.liuyongjin.cn/api/v1/article/praise](http://api.liuyongjin.cn/api/v1/article/praise)<br/>
 
-[14、浏览量:https://api.liuyongjin.cn/api/v1/article/browse](https://api.liuyongjin.cn/api/v1/article/browse)<br/>
+[14、浏览量:http://api.liuyongjin.cn/api/v1/article/browse](http://api.liuyongjin.cn/api/v1/article/browse)<br/>
 
-[15、新增文章:https://api.liuyongjin.cn/api/v1/article/add](https://api.liuyongjin.cn/api/v1/article/add)<br/>
+[15、新增文章:http://api.liuyongjin.cn/api/v1/article/add](http://api.liuyongjin.cn/api/v1/article/add)<br/>
 
-[16、编辑文章:https://api.liuyongjin.cn/api/v1/article/edit](https://api.liuyongjin.cn/api/v1/article/edit)<br/>
+[16、编辑文章:http://api.liuyongjin.cn/api/v1/article/edit](http://api.liuyongjin.cn/api/v1/article/edit)<br/>
 
-[17、更新文章状态:https://api.liuyongjin.cn/api/v1/article/updateStatus](https://api.liuyongjin.cn/api/v1/article/updateStatus)<br/>
+[17、更新文章状态:http://api.liuyongjin.cn/api/v1/article/updateStatus](http://api.liuyongjin.cn/api/v1/article/updateStatus)<br/>
 
-[18、删除文章:https://api.liuyongjin.cn/api/v1/article/del](https://api.liuyongjin.cn/api/v1/article/del)<br/>
+[18、删除文章:http://api.liuyongjin.cn/api/v1/article/del](http://api.liuyongjin.cn/api/v1/article/del)<br/>
 
-[19、更新文章状态:https://api.liuyongjin.cn/api/v1/article/bdel](https://api.liuyongjin.cn/api/v1/article/bdel)<br/>
+[19、更新文章状态:http://api.liuyongjin.cn/api/v1/article/bdel](http://api.liuyongjin.cn/api/v1/article/bdel)<br/>
 
-[20、评论列表:https://api.liuyongjin.cn/api/v1/comment/index](https://api.liuyongjin.cn/api/v1/comment/index)<br/>
+[20、评论列表:http://api.liuyongjin.cn/api/v1/comment/index](http://api.liuyongjin.cn/api/v1/comment/index)<br/>
 
-[21、新增评论:https://api.liuyongjin.cn/api/v1/comment/add](https://api.liuyongjin.cn/api/v1/comment/add)<br/>
+[21、新增评论:http://api.liuyongjin.cn/api/v1/comment/add](http://api.liuyongjin.cn/api/v1/comment/add)<br/>
 
-[22、编辑评论:https://api.liuyongjin.cn/api/v1/comment/edit](https://api.liuyongjin.cn/api/v1/comment/edit)<br/>
+[22、编辑评论:http://api.liuyongjin.cn/api/v1/comment/edit](http://api.liuyongjin.cn/api/v1/comment/edit)<br/>
 
-[23、删除评论:https://api.liuyongjin.cn/api/v1/comment/del](https://api.liuyongjin.cn/api/v1/comment/del)<br/>
+[23、删除评论:http://api.liuyongjin.cn/api/v1/comment/del](http://api.liuyongjin.cn/api/v1/comment/del)<br/>
 
-[24、批量删除评论:https://api.liuyongjin.cn/api/v1/comment/bdel](https://api.liuyongjin.cn/api/v1/comment/bdel)<br/>
+[24、批量删除评论:http://api.liuyongjin.cn/api/v1/comment/bdel](http://api.liuyongjin.cn/api/v1/comment/bdel)<br/>
 
-[25、标签列表:https://api.liuyongjin.cn/api/v1/tag/index](https://api.liuyongjin.cn/api/v1/tag/index)<br/>
+[25、标签列表:http://api.liuyongjin.cn/api/v1/tag/index](http://api.liuyongjin.cn/api/v1/tag/index)<br/>
 
-[26、新增标签:https://api.liuyongjin.cn/api/v1/tag/add](https://api.liuyongjin.cn/api/v1/tag/add)<br/>
+[26、新增标签:http://api.liuyongjin.cn/api/v1/tag/add](http://api.liuyongjin.cn/api/v1/tag/add)<br/>
 
-[27、编辑标签:https://api.liuyongjin.cn/api/v1/tag/edit](https://api.liuyongjin.cn/api/v1/tag/edit)<br/>
+[27、编辑标签:http://api.liuyongjin.cn/api/v1/tag/edit](http://api.liuyongjin.cn/api/v1/tag/edit)<br/>
 
-[28、删除标签:https://api.liuyongjin.cn/api/v1/tag/del](https://api.liuyongjin.cn/api/v1/tag/del)<br/>
+[28、删除标签:http://api.liuyongjin.cn/api/v1/tag/del](http://api.liuyongjin.cn/api/v1/tag/del)<br/>
 
-[29、批量删除标签:https://api.liuyongjin.cn/api/v1/tag/bdel](https://api.liuyongjin.cn/api/v1/tag/bdel)<br/>
+[29、批量删除标签:http://api.liuyongjin.cn/api/v1/tag/bdel](http://api.liuyongjin.cn/api/v1/tag/bdel)<br/>
 
-[30、配置列表:https://api.liuyongjin.cn/api/v1/config/index](https://api.liuyongjin.cn/api/v1/config/index)<br/>
+[30、配置列表:http://api.liuyongjin.cn/api/v1/config/index](http://api.liuyongjin.cn/api/v1/config/index)<br/>
