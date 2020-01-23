@@ -124,60 +124,69 @@ class Article extends BaseModel
 
     public static function getArticle($data)
     {
-        $resQuery=static::with('tags');
-        $countQuery=new Article();
-        //各种条件筛选
-        if(isset($data['tags_id']) && count($data['tags_id'])>0){
-            //貌似laravel这样写可以
-            // $article = Article::with('tags')->whereHas('tags', function($query)use($data){
-            //     $query->where('id',$data['tag_id']);
-            // })->select();
-            $resQuery=$resQuery->alias('a')->field('a.id,a.title,a.status,a.des,a.main_img,a.content,a.comment_count,a.praise_count,a.browse_count,a.create_time,a.update_time')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
-            $countQuery =  $countQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
-        }
-        if(isset($data['title'])){
-            $resQuery=$resQuery->whereLike('title',"%{$data['title']}%");
-            $countQuery = $countQuery->whereLike('title',"%{$data['title']}%");
-        }
-        if(isset($data['status'])){
-            $where=['status'=>$data['status']];
-            $resQuery=$resQuery->where($where);
-            $countQuery = $countQuery->where($where);
-        }
-        if(isset($data['create_date'])){
+        try{   
+            $resQuery=static::with('tags');
+            $countQuery=new Article();
+            //各种条件筛选
             if(isset($data['tags_id']) && count($data['tags_id'])>0){
-                $field='a.create_time';
-            }else{
-                $field='create_time';
+                //貌似laravel这样写可以
+                // $article = Article::with('tags')->whereHas('tags', function($query)use($data){
+                //     $query->where('id',$data['tag_id']);
+                // })->select();
+                $resQuery=$resQuery->alias('a')->field('a.id,a.title,a.status,a.des,a.main_img,a.content,a.comment_count,a.praise_count,a.browse_count,a.create_time,a.update_time')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
+                $countQuery =  $countQuery->alias('a')->join(['tag_article'=>'b'],'a.id = b.article_id')->whereIn('b.tag_id',$data['tags_id']);
             }
-            $resQuery=$resQuery->where($field, 'between time', $data['create_date']);
-            $countQuery = $countQuery->where($field, 'between time', $data['create_date']);
-        }
-        if(isset($data['sorter'])){
-            $order=explode(" ", $data['sorter']);
-            $order[1]=='ascend'?$order[1]='asc':$order[1]='desc';
-            //如果存在联合查询指定别名
-            if(isset($data['tags_id']) && count($data['tags_id'])>0){
-                $order[0]='a.'.$order[0];
+            if(isset($data['title'])){
+                $resQuery=$resQuery->whereLike('title',"%{$data['title']}%");
+                $countQuery = $countQuery->whereLike('title',"%{$data['title']}%");
             }
-            $resQuery=$resQuery->order($order[0],$order[1]);
-        }
-        $article=$resQuery->limit($data['pageSize'])->page($data['current'])->fetchSql(false)->select();
-        // var_dump($article);
-        // exit;
-        $count=$countQuery->count();
-        if(!$article){
+            if(isset($data['status'])){
+                $where=['status'=>$data['status']];
+                $resQuery=$resQuery->where($where);
+                $countQuery = $countQuery->where($where);
+            }
+            if(isset($data['create_date'])){
+                if(isset($data['tags_id']) && count($data['tags_id'])>0){
+                    $field='a.create_time';
+                }else{
+                    $field='create_time';
+                }
+                $resQuery=$resQuery->where($field, 'between time', $data['create_date']);
+                $countQuery = $countQuery->where($field, 'between time', $data['create_date']);
+            }
+            if(isset($data['sorter'])){
+                $order=explode(" ", $data['sorter']);
+                $order[1]=='ascend'?$order[1]='asc':$order[1]='desc';
+                //如果存在联合查询指定别名
+                if(isset($data['tags_id']) && count($data['tags_id'])>0){
+                    $order[0]='a.'.$order[0];
+                }
+                $resQuery=$resQuery->order($order[0],$order[1]);
+            }
+            $article=$resQuery->limit($data['pageSize'])->page($data['current'])->fetchSql(false)->select();
+            // var_dump($article);
+            // exit;
+            $count=$countQuery->count();
+            if(!$article){
+                throw new BaseException(
+                [
+                    'msg' => '获取文章失败',
+                    'errorCode'=>1
+                ]);
+            }
+            $res['data']=$article;
+            $res['total']=$count;
+            $res['pageSize']=$data['pageSize'];
+            $res['current']=$data['current'];
+            return $res;
+        }catch(\Exception $e){
             throw new BaseException(
             [
                 'msg' => '获取文章失败',
                 'errorCode'=>1
             ]);
         }
-        $res['data']=$article;
-        $res['total']=$count;
-        $res['pageSize']=$data['pageSize'];
-        $res['current']=$data['current'];
-        return $res;
+     
     }
     public static function addArticle($data)
     {
