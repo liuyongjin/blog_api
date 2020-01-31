@@ -70,6 +70,8 @@ Route::group('api/:version',function(){
     Route::post('tag/bdel', 'api/:version.Tag/bdel');
     //配置列表
     Route::post('config/index', 'api/:version.Config/index');
+    //更新信息接口
+    Route::post('info/update', 'api/:version.Info/updateInfo');
 });
 // Route::get('test', 'index/index/index');
 
