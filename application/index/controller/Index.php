@@ -5,7 +5,7 @@ class Index
 {
     public function index()
     {
-        return [
+        return json([
             {
                 'title': '学习笔记学习笔记学习笔记学习笔记学习笔记学习笔记学习笔记学习笔记',
                 'content': '学习内容学习内容学习内容学习内容学习内容学习内容学习内容学习内容学习内容学习内容学习内容学习内容学习内容',
@@ -54,6 +54,6 @@ class Index
                 'comment': '0',
                 'time': '2020/2/6',
             },
-        ];
+        ]);
     }
 }
